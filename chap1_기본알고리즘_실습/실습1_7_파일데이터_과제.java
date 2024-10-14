@@ -7,60 +7,95 @@ import java.io.FileReader;
 import java.io.IOException;
 
 public class 실습1_7_파일데이터_과제 {
-/*
- * trim(),split(" ")
- */
-    // 파일을 읽어 각 라인을 공백으로 분리하여 정렬하는 함수
-    public static String[] readSortFromFile(String filename) {
-    	// 저장할 데이터
-        String data = "12 1 131 2 23";
-        String data2 = " 312 32 8 22 7";
-        // 파일에 데이터 쓰기
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filename))) {
-        	writer.write(data);
-        	writer.write(data2);
-        	
-            // 데이터를 파일에 씀
-            
-        } catch (IOException e) {
-            System.out.println("파일 쓰기 중 오류 발생: " + e.getMessage());
-        }
-        
-        StringBuilder sb = new StringBuilder();
-        
-        try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
-        	
-            // 라인을 읽어서 StringBuilder에 추가
-            
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+	/*
+	 * trim(),split(" ")
+	 */
+	// 파일을 읽어 각 라인을 공백으로 분리하여 정렬하는 함수
+	public static String[] readSortFromFile(String filename) {
+		// 저장할 데이터
+		String data = "12 1 131 2 23";
+		String data2 = " 312 32 8 22 7";
+		// 파일에 데이터 쓰기
+		try (BufferedWriter writer = new BufferedWriter(new FileWriter(filename))) {
+			writer.write(data);
+			writer.write(data2);
+			writer.flush();
 
-        // 공백으로 구분된 서브스트링을 배열로 변환하고 정렬
-     
-        // 정렬된 배열 반환
-    }
+			// 데이터를 파일에 씀
 
-    // 문자열 배열을 정수 배열로 변환하고 정렬하는 함수
-    
+		} catch (IOException e) {
+			System.out.println("파일 쓰기 중 오류 발생: " + e.getMessage());
+		}
 
-    // 문자열 배열 출력 함수
-    
+		StringBuilder sb = new StringBuilder();
 
-    // 정수 배열 출력 함수
-  
+		try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
+			String str;
+			while(true) {
+				if ((str = br.readLine()) == null) break;
+				sb.append(str);
+			}
+//			int num;
+//			while ((num = br.read()) != -1) {
+//				sb.append((char) num);
+//			}
 
-    public static void main(String[] args) {
-        String filename = "data.txt";  // 파일 이름 설정 (실제 파일 경로로 변경)
+			// 라인을 읽어서 StringBuilder에 추가
 
-        // 파일에서 읽어온 문자열 배열을 정렬 후 출력
-        String[] sortedStringArray = readSortFromFile(filename);
-        System.out.println("Sorted String Array from File:");
-        printStringArray(sortedStringArray);
-        
-        // 문자열 배열을 정수 배열로 변환하고 정렬 후 출력
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		String str = sb.toString();
+		String[] array = str.split(" ");
+		return array;
+
+		// 공백으로 구분된 서브스트링을 배열로 변환하고 정렬
+
+		// 정렬된 배열 반환
+	}
+
+	public static void printStringArray(String[] str) {
+		for (String item : str) {
+			System.out.println(item);
+		}
+
+	}
+	
+	public static int[] convertSortToInt(String[] str) {
+		int[] array = new int[str.length];
+		int i =0;
+		for (String item :str) {
+			array[i] = Integer.parseInt(item);
+			i++;
+		}
+		return array;
+	}
+	
+	public static void printIntArray(int[] num) {
+		for (int n : num) {
+			System.out.println(n);
+		}
+	}
+	
+	
+
+	// 문자열 배열을 정수 배열로 변환하고 정렬하는 함수
+
+	// 문자열 배열 출력 함수
+
+	// 정수 배열 출력 함수
+
+	public static void main(String[] args) {
+		String filename = "src/files/data.txt"; // 파일 이름 설정 (실제 파일 경로로 변경)
+
+		// 파일에서 읽어온 문자열 배열을 정렬 후 출력
+		String[] sortedStringArray = readSortFromFile(filename);
+		System.out.println("Sorted String Array from File:");
+		printStringArray(sortedStringArray);
+
+		// 문자열 배열을 정수 배열로 변환하고 정렬 후 출력
         int[] sortedIntArray = convertSortToInt(sortedStringArray);
         System.out.println("Sorted Integer Array:");
         printIntArray(sortedIntArray);
-    }
+	}
 }
