@@ -71,19 +71,17 @@ public class train_실습3_6_0스트링배열정렬이진탐색 {
 	}
 	
 	static int binarySearch(String[] arr, String str) {
-		int len = arr.length;
-		if(arr[len/2].compareTo(str) < 0) {
-			for(int i = (len/2)+1 ; i < len ; i++) {
-				if(arr[i].equals(str)) return i;
-				else i++;
-			}
-			return -1;
-		} else if (arr[len/2].compareTo(str) > 0) {
-			for(int i = 0 ; i < (len/2) ; i++) {
-				if(arr[i].equals(str)) return i;
-				else i++;
-			}
-			return -1;
-		} else return len/2 ;
+		int st = 0;
+		int end = arr.length-1;
+		int cent = 0;
+		do {
+			cent = (st+end)/2;
+			if(arr[cent].compareTo(str) == 0) return cent;
+			else if (arr[cent].compareTo(str) > 0) end = cent -1 ;
+			else st = cent + 1 ;
+		} while (st <= end);
+		
+		return -1;
+		
 	}
 }

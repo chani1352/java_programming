@@ -19,7 +19,7 @@ public class train_실습3_9_2스트링중복없는리스트합병 {
 //1단계: string, 2단계: string 객체,  Person 객체들의 list\
 //file1: 서울,북경,상해,서울,도쿄, 뉴욕,부산
 //file2: 런던, 로마,방콕, 도쿄,서울,부산
-//file > string split() > 배열 > ArrayList > sort > iterator 사용하여 merge > 중복 제거 > string 배열 > file에 저장
+//file > string split() > 배열 > ArrayList > sort > iterator 사용하여 merge > 중복 제거 > string 배열 > file에 저장 
 
 
 	/*

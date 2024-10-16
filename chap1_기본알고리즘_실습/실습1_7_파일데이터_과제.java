@@ -35,10 +35,6 @@ public class 실습1_7_파일데이터_과제 {
 				if ((str = br.readLine()) == null) break;
 				sb.append(str);
 			}
-//			int num;
-//			while ((num = br.read()) != -1) {
-//				sb.append((char) num);
-//			}
 
 			// 라인을 읽어서 StringBuilder에 추가
 

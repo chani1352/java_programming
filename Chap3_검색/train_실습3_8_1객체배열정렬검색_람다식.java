@@ -1,5 +1,6 @@
 package Chap3_검색;
 
+import java.util.Arrays;
 import java.util.Comparator;
 
 /*
@@ -17,15 +18,87 @@ class Fruit4 {
 	String name;
 	int price;
 	String expire;
+	
+	public Fruit4(String name, int price, String expire) {
+		super();
+		this.name = name;
+		this.price = price;
+		this.expire = expire;
+	}
+	
+	
+
+	public String getName() {
+		return name;
+	}
+
+
+	public String getExpire() {
+		return expire;
+	}
+
+
+	public int getPrice() {
+		return price;
+	}
+
+
+	@Override
+	public String toString() {
+		return "Fruit4 [name=" + name + ", price=" + price + ", expire=" + expire + "]";
+	}
+	
+	
 
 }
 //교재 123~129 페이지 참조하여 구현
-class FruitName implements Comparator<Fruit4>{}
-class FruitPrice implements Comparator<Fruit4>{}
+class FruitName implements Comparator<Fruit4>{
 
-public class Test_실습3_7객체배열이진탐색 {
+	@Override
+	public int compare(Fruit4 o1, Fruit4 o2) {
+		// TODO Auto-generated method stub
+		if (o1.name.compareTo(o2.name) == 0) return 0;
+		else return o1.name.compareTo(o2.name) > 0 ? 1 : -1;
+	}
+	
+	
+}
+class FruitPrice implements Comparator<Fruit4>{
 
-	private static void sortData(Fruit4[] arr, Comparator<Fruit4> cc_price) {}
+	@Override
+	public int compare(Fruit4 o1, Fruit4 o2) {
+		// TODO Auto-generated method stub
+		if (o1.price == o2.price) return 0;
+		else return o1.price > o2.price ? 1 : -1;
+	}
+	
+	
+}
+
+public class train_실습3_8_1객체배열정렬검색_람다식 {
+	
+	static void showData(String msg,Fruit4[] arr) {
+		System.out.println(msg);
+		for(Fruit4 item : arr) {
+			System.out.println(item);
+		}
+	}
+	
+	static int binarySearch(Fruit4[] arr,Fruit4 data, Comparator<Fruit4> cc_price) {
+		int pl = 0;
+		int pr = arr.length -1;
+		do {
+			int pc = (pl+pr) /2;
+			if(cc_price.compare(arr[pc], data) == 0 ) return pc;
+			else if (cc_price.compare(arr[pc], data) < 0) pl = pc + 1;
+			else pr = pc -1;
+		} while (pl <=pr);
+		return -1;
+	}
+
+	private static void sortData(Fruit4[] arr, Comparator<Fruit4> cc_price) {
+		Arrays.sort(arr,cc_price);
+	}
 
 	public static void main(String[] args) {
 
