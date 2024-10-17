@@ -20,6 +20,19 @@ public class train_실습3_9_0스트링배열합병 {
 		int len1 = 0;
 		int len2 = 0;
 		for(int i = 0 ; i < s3.length ; i++) {
+			if(len1 == arr1.length) {
+				for(int j = len2 ; j < arr2.length ; j++) {
+					s3[i] = arr2[len2];
+					i++;
+				}
+				break;
+			} else if (len2 == arr2.length) {
+				for(int j = len1 ; j < arr1.length ; j++) {
+					s3[i] = arr1[len1];
+					i++;
+				}
+				break;
+			}	
 			if(arr1[len1].compareTo(arr2[len2]) == 0 ) {
 				s3[i] = arr1[len1];
 				len1 += 1;
@@ -29,27 +42,16 @@ public class train_실습3_9_0스트링배열합병 {
 				s3[i] = arr1[len1];
 				len1 += 1;
 			}
-			else s3[i] = arr2[len2];
-			len2 += 1;
+			else {s3[i] = arr2[len2];
+				 len2 += 1;
+			}
+			
 		}
 		
 		return s3;
 		
 	}
-	
-//	강감찬
-//	계백
-//	김유신
-//	을지문덕
-//	최치원
-//	홍길동
-//	
-//	독도
-//	동백섬
-//	영도
-//	오륙도
-//	울릉도
-//	한산도
+
 	
 	public static void main(String[] args) {
 		String[] s1 = { "홍길동", "강감찬", "을지문덕", "계백", "김유신", "최치원" };
