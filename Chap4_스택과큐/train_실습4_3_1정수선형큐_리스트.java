@@ -21,44 +21,60 @@ class Queue4 {
 
 //--- 실행시 예외: 큐가 비어있음 ---//
 	public class EmptyQueueException extends RuntimeException {
-		public EmptyQueueException() {
+		public EmptyQueueException(String msg) {
+			super(msg);
 		}
 	}
 
 //--- 실행시 예외: 큐가 가득 찼음 ---//
 	public class OverflowQueueException extends RuntimeException {
-		public OverflowQueueException() {
+		public OverflowQueueException(String msg) {
+			super(msg);
 		}
 	}
 
 //--- 생성자(constructor) ---//
 public Queue4(int maxlen) {
-
+	capacity = maxlen;
+	front = rear = 0;
+	que = new ArrayList<>();	
 }
 
 //--- 큐에 데이터를 인큐 ---//
 	public int enque(int x) throws OverflowQueueException {
-
+		if(rear >= capacity)
+			throw new OverflowQueueException("enque : stack overflow");
+		que.add(x);
+		rear++;
+		return x;
 	}
 
 //--- 큐에서 데이터를 디큐 ---//
 	public int deque() throws EmptyQueueException {
-
+		if(rear <= 0)
+			throw new EmptyQueueException("deque : stack empty");
+		rear--;
+		return que.remove(front);
 	}
 
 //--- 큐에서 데이터를 피크(프런트 데이터를 들여다봄) ---//
 	public int peek() throws EmptyQueueException {
-
+		if(rear <= 0)
+			throw new EmptyQueueException("peek : stack empty");
+		return que.get(rear-1);
 	}
 
 //--- 큐를 비움 ---//
 	public void clear() {
-		num = front = rear = 0;
+		rear = 0;
 	}
 
 //--- 큐에서 x를 검색하여 인덱스(찾지 못하면 –1)를 반환 ---//
 	public int indexOf(int x) {
-
+		for(int i = 0 ; i < rear ; i++) {
+			if(que.get(i) == x) return i;
+		}
+		return -1;
 	}
 
 //--- 큐의 크기를 반환 ---//
@@ -68,22 +84,24 @@ public Queue4(int maxlen) {
 
 //--- 큐에 쌓여 있는 데이터 개수를 반환 ---//
 	public int size() {
-		return num;
+		return rear;
 	}
 
 //--- 큐가 비어있는가? ---//
 	public boolean isEmpty() {
-		return num <= 0;
+		return rear <= 0;
 	}
 
 //--- 큐가 가득 찼는가? ---//
 	public boolean isFull() {
-		return num >= capacity;
+		return rear >= capacity;
 	}
 
 //--- 큐 안의 모든 데이터를 프런트 → 리어 순으로 출력 ---//
 	public void dump() {
-
+		for(int num : que) {
+			System.out.print(num + " ");
+		}
 	}
 }
 public class train_실습4_3_1정수선형큐_리스트 {
@@ -97,12 +115,15 @@ public class train_실습4_3_1정수선형큐_리스트 {
 			System.out.printf("현재 데이터 개수: %d / %d\n", oq.size(), oq.getCapacity());
 			System.out.print("(1)인큐　(2)디큐　(3)피크　(4)덤프　(0)종료: ");
 			int menu = stdIn.nextInt();
+			if (menu == 0)
+				break;
 			switch (menu) {
 			case 1: // 인큐
 				rndx = random.nextInt(20);
 				System.out.print("입력데이터: (" + rndx +")");
 				try {
-					oq.enque(rndx);
+					p = oq.enque(rndx);
+					System.out.println("인큐한 데이터는 " + p + "입니다.");
 				} catch(Chap4_스택과큐.Queue4.OverflowQueueException e) {
 					System.out.println("stack이 가득찼있습니다.");
 				}

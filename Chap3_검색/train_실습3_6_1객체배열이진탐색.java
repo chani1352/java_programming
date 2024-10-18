@@ -20,18 +20,19 @@ class PhyscData2 implements Comparable<PhyscData2>{
 	}
 	@Override
 	public String toString() {//[홍길동,162,0.3] 형태로 리턴한다 
-		return "[" + this.name + "," + this.height + "," + this.vision + "]";
+		return "[" + name + "," + height + "," + vision + "]";
 	}
+	
 	@Override
 	public int compareTo(PhyscData2 p) {
-		if (this.name.compareTo(p.name) == 0) {
-			if (this.height == p.height) {
-				if(this.vision == p.vision) return 0;
-				else return this.vision > p.vision ? 1 : -1;
+		if (name.compareTo(p.name) == 0) {
+			if (height == p.height) {
+				if(vision == p.vision) return 0;
+				else return vision > p.vision ? 1 : -1;
 			} else
-				return this.height > p.height ? 1 : -1;
+				return height > p.height ? 1 : -1;
 		} else
-			return this.name.compareTo(p.name);
+			return name.compareTo(p.name);
 		// name 비교 버젼
 		// height 비교 버젼
 	}

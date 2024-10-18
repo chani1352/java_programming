@@ -23,44 +23,47 @@ class IntStack4 {
 
 //--- 실행시 예외: 스택이 비어있음 ---//
 	public class EmptyIntStackException extends RuntimeException {
-//추가
+		EmptyIntStackException(String msg){
+			super(msg);
+		}
 	}
 
 //--- 실행시 예외: 스택이 가득 참 ---//
 	public class OverflowIntStackException extends RuntimeException {
-//추가
+		OverflowIntStackException(String msg){
+			super(msg);
+		}
 	}
 
 //--- 생성자(constructor) ---//
 	public IntStack4(int maxlen) {
 		capacity = maxlen;
 		top = 0;
-		try {
-			
-		} catch (OutOfMemoryError e) { // 생성할 수 없음
-			capacity = 0;
-		}
+		stk = new ArrayList<>();
 	}
 
 //--- 스택에 x를 푸시 ---//
 	public void push(int x) throws OverflowIntStackException {
 		if (isFull()) // 스택이 가득 참
 			throw new OverflowIntStackException("push: stack overflow");
-//추가
-	}
+		stk.add(x);
+		top++;
+;	}
 
 //--- 스택에서 데이터를 팝(정상에 있는 데이터를 꺼냄) ---//
 	public int pop() throws EmptyIntStackException {
 		if (isEmpty()) // 스택이 빔
 			throw new EmptyIntStackException("pop: stack empty");
-//추가
+		top--;
+		return stk.remove(top);
+
 	}
 
 //--- 스택에서 데이터를 피크(peek, 정상에 있는 데이터를 들여다봄) ---//
 	public int peek() throws EmptyIntStackException {
 		if (isEmpty()) // 스택이 빔
 			throw new EmptyIntStackException("peek: stack empty");
-//추가
+		return stk.get(top-1);
 	}
 
 //--- 스택을 비움 ---//
@@ -72,32 +75,38 @@ class IntStack4 {
 		 */
 		if (isEmpty()) // 스택이 빔
 			throw new EmptyIntStackException("peek: stack empty");
-//추가
+		while(!isEmpty()) {
+			stk.remove(0);
+			top--;
+		}
 	}
 
 //--- 스택에서 x를 찾아 인덱스(없으면 –1)를 반환 ---//
 	public int indexOf(int x) {
-//추가
+		for(int i = top-1 ; i >=0 ; i++) {
+			if(stk.get(i) == x) return i;
+		}
+		return -1;
 	}
 
 //--- 스택의 크기를 반환 ---//
 	public int getCapacity() {
-		//추가
+		return capacity;
 	}
 
 //--- 스택에 쌓여있는 데이터 갯수를 반환 ---//
 	public int size() {
-	//추가
+		return top;
 	}
 
 //--- 스택이 비어있는가? ---//
 	public boolean isEmpty() {
-		//추가
+		return top <= 0;
 	}
 
 //--- 스택이 가득 찼는가? ---//
 	public boolean isFull() {
-		//추가
+		return top >= capacity;
 	}
 	
 //--- 스택 안의 모든 데이터를 바닥 → 정상 순서로 표시 ---//
@@ -106,9 +115,11 @@ class IntStack4 {
 			System.out.println("스택이 비어있습니다.");
 			throw new EmptyIntStackException("peek: stack empty");
 		}
-		else {
-			//추가할 부분
+		System.out.print("덤프한 데이터 : ");
+		for(int i = 0 ; i < top ; i++) {
+			System.out.print(stk.get(i) + " ");
 		}
+		
 	}
 }
 public class train_실습4_2_1정수스택리스트 {

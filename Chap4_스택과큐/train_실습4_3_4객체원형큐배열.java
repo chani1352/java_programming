@@ -26,6 +26,17 @@ import java.util.Scanner;
 class Point5 {
 	private int ix;
 	private int iy;
+	
+	public Point5(int ix , int iy) {
+		this.ix = ix;
+		this.iy = iy;
+	}
+
+	@Override
+	public String toString() {
+		return "Point5 [ix=" + ix + ", iy=" + iy + "]";
+	}
+	
 
 }
 
@@ -37,12 +48,16 @@ class CircularQueue {
 	boolean isEmptyTag;
 	//--- 실행시 예외: 큐가 비어있음 ---//
 		public class EmptyQueueException extends RuntimeException {
-//추가
+			public EmptyQueueException(String msg){
+				super(msg);
+			}
 		}
 
 	//--- 실행시 예외: 큐가 가득 찼음 ---//
 		public class OverflowQueueException extends RuntimeException {
-//추가
+			public OverflowQueueException(String msg) {
+				super(msg);
+			}
 		}
 	public CircularQueue(int count) {
 		front = rear = 0;
@@ -55,14 +70,19 @@ class CircularQueue {
 		if(isFull()) {
 			throw new OverflowQueueException("push: circular queue overflow"); 
 		}
-//추가
+		isEmptyTag = false;
+		que[rear++] = it;
+		if(rear == QUEUE_SIZE) rear = 0;
 	}
 
 	Point5 pop() throws EmptyQueueException{
 		if(isEmpty()) {
 			throw new EmptyQueueException("pop: circular queue overflow"); 
 		}
-//추가
+		Point5 x = que[front++];
+		if(front == QUEUE_SIZE) front = 0;
+		if(front == rear) isEmptyTag = true;
+		return x;
 
 	}
 
@@ -70,39 +90,47 @@ class CircularQueue {
 		if(isEmpty()) {
 				throw new EmptyQueueException("enque: circular queue overflow"); 
 		}		 
-//추가
+		front = rear = 0;
+		isEmptyTag = true;
 	}
 
 	//--- 큐의 크기를 반환 ---//
 		public int getCapacity() {
-//추가
+			return QUEUE_SIZE;
 		}
 
 	//--- 큐에 쌓여 있는 데이터 개수를 반환 ---//
 		public int size() {//front, rear를 사용하여 갯수를 size로 계산
-//추가
+			int num = rear - front;
+			if(num <= 0 && !isEmptyTag) num = QUEUE_SIZE + num;
+			return num;
 		}
 		//--- 원형 큐가 비어있는가? --- 수정 필요//
 		public boolean isEmpty() {
-//추가
+			return isEmptyTag;
 		}
 
 	//--- 원형 큐가 가득 찼는가? --- 수정 필요//
 		public boolean isFull() {
-//추가
+			return front==rear && !isEmptyTag;
 		}
 
 		public void dump() throws EmptyQueueException{
 			if (isEmpty())
 					throw new EmptyQueueException("dump: queue empty");
 			else {
-//추가
+				int num = rear - front;
+				if(num <= 0) num = QUEUE_SIZE + num;
+				for(int i = 0 ; i < num ; i++) {
+					int idx = (i+front)%QUEUE_SIZE;
+					System.out.println(que[idx]);
+				}
 			}
 		}
 		public Point5 peek() throws EmptyQueueException {
 			if (isEmpty())
 				throw new EmptyQueueException("peek: queue empty"); // 큐가 비어있음
-//추가
+			return que[front];
 		}
 }
 

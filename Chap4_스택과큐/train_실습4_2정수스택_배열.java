@@ -17,12 +17,13 @@ class IntStack3 {
 
 //--- 실행시 예외: 스택이 비어있음 ---//
 	public class EmptyIntStackException extends RuntimeException {
-//생성자 추가 
+		EmptyIntStackException(String msg){
+			super(msg);
+		}
 	}
 
 //--- 실행시 예외: 스택이 가득 참 ---//
 	public class OverflowIntStackException extends RuntimeException {
-//생성자 추가
 		OverflowIntStackException(String msg){
 			super(msg);
 		}
@@ -43,30 +44,34 @@ class IntStack3 {
 	public int push(int x) throws OverflowIntStackException {
 		if (top >= capacity) // 스택이 가득 참
 			throw new OverflowIntStackException("push: stack overflow");  //("") 안에 값을 주면 위 class내 생성자에 추가 
-//추가
 		return stk[top++] = x;
 	}
 
 //--- 스택에서 데이터를 팝(정상에 있는 데이터를 꺼냄) ---// 
 	public int pop() throws EmptyIntStackException {
-//추가
 		if(top <=0 )
-			throw new 
+			throw new EmptyIntStackException("pop : stack empty");
+		return stk[--top];
 	}
 
 //--- 스택에서 데이터를 피크(peek, 정상에 있는 데이터를 들여다봄) ---// 꼭대기에 있는 값을 출력
 	public int peek() throws EmptyIntStackException {
-//추가
+		if(top <= 0 )
+			throw new EmptyIntStackException("peek : stack empty");
+		return stk[top-1];
 	}
 
 //--- 스택을 비움 ---//
 	public void clear() {
-//추가
+		top = 0;
 	}
 
 //--- 스택에서 x를 찾아 인덱스(없으면 –1)를 반환 ---//
 	public int indexOf(int x) {
-//추가
+		for(int i = top-1 ; i >=0 ; i--) {
+			if(stk[i] == x) return i;
+		}
+		return -1;
 	}
 
 //--- 스택의 크기를 반환 ---//
@@ -81,21 +86,27 @@ class IntStack3 {
 
 //--- 스택이 비어있는가? ---//
 	public boolean isEmpty() {
-//추가
+		return top <= 0;
 	}
 
 //--- 스택이 가득 찼는가? ---//
 	public boolean isFull() {
-//추가
+		return top >= capacity;
 	}
 	
 //--- 스택 안의 모든 데이터를 바닥 → 정상 순서로 표시 ---//
 	public void dump() throws EmptyIntStackException{
-//추가
+		if (top <= 0)
+			throw new EmptyIntStackException("dump : stack empty");
+		System.out.print("데이터:");
+		for(int i = 0 ; i < top ; i++) {
+			System.out.print(stk[i] + " ");
+		}
+		System.out.println();
 	}
 }
 
-public class 실습4_2정수스택 {
+public class train_실습4_2정수스택_배열 {
 
 	public static void main(String[] args) {
 		Scanner stdIn = new Scanner(System.in);
@@ -151,7 +162,6 @@ public class 실습4_2정수스택 {
 					System.out.println("스택이 비어있습니다." + e.getMessage());
 					e.printStackTrace();
 				}
-				s.dump();
 				break;
 			}
 		}
