@@ -7,7 +7,7 @@ import java.util.StringTokenizer;
 	public class Test14_스트링토큰 {
 	public static void main(String[] args) {
 
-		String msg = "Although the world is full of suffering, it is full also of the overcoming of it.";
+		String msg = "Although the world is full of suffering , it is full also of the overcoming of it.";
 		StringTokenizer st1 = new StringTokenizer(msg);
 		System.out.println("단어 수 : " + st1.countTokens());
 		while (st1.hasMoreTokens()) {
