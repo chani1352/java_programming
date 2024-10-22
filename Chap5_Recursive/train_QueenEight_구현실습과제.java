@@ -6,6 +6,8 @@ package Chap5_Recursive;
 import java.util.ArrayList;
 import java.util.List;
 
+import Chap5_Recursive.Stack4.EmptyGenericStackException;
+
 //import Chap4_스택과큐.objectStack1.EmptyGenericStackException;
 
 //https://www.geeksforgeeks.org/n-queen-problem-backtracking-3/?ref=lbp
@@ -43,6 +45,16 @@ class Point {
 		ix = x;
 		iy = y;
 	}
+
+	public int getIx() {
+		return ix;
+	}
+
+	public int getIy() {
+		return iy;
+	}
+
+
 }
 
 class Stack4 {
@@ -147,7 +159,7 @@ class Stack4 {
 }
 
 public class train_QueenEight_구현실습과제 {
-	static void EightQueen(int[][] d) {
+	static void EightQueen(int[][] d) throws EmptyGenericStackException {
 		int numberOfSolutions = 0;
 		int count = 0;// 퀸 배치 갯수
 		int ix = 0, iy = 0;// 행 ix, 열 iy
@@ -159,34 +171,46 @@ public class train_QueenEight_구현실습과제 {
 		ix++;// ix는 행별로 퀸 배치되는 것을 말한다.
 		iy = 0;// 다음 행으로 이동하면 열은 0부터 시작
 		while (true) { // 교재 175페이지 코드를 참조하여 구현
-			if (st.isEmpty() && ix == 8) // ix가 8이면 8개 배치 완료, stack이 empty가 아니면 다른 해를 구한다
+			if (st.isEmpty() && iy == 8) // ix가 8이면 8개 배치 완료, stack이 empty가 아니면 다른 해를 구한다
 				break;
 			if ((iy = nextMove(d, ix, iy)) == -1) {// 다음 이동할 열을 iy로 주는데 -1이면 더이상 이동할 열이 없음을 나타냄
-				ix++;
+				p = st.pop();
+				d[p.getIx()][p.getIy()] = 0;
+				ix--;	
+				iy = p.getIy() + 1;	
+				count-=1;
+				continue;
 			}
-			else {
-				p = new Point(ix,iy);
-				st.push(p);
-				ix++;
-				iy=0;
-				count +=1;
-			}
+	
+			st.push(new Point(ix,iy));
+			d[ix][iy] = 1;
+			ix++;
+			iy=0;
+			count +=1;
+			
 			if (count == 8) { // 8개를 모두 배치하면
-
+				numberOfSolutions +=1;	
+				showQueens(d);
+				System.out.println("갯수 : " +numberOfSolutions);
+				p = st.pop();
+				d[p.getIx()][p.getIy()] = 0;
+				ix--;	
+				iy = p.getIy() + 1;		
+				count -=1;
 			}
 		}
 	}
 
 
 	public static boolean checkRow(int[][] d, int crow) { // 배열 d에서 행 crow에 퀸을 배치할 수 있는지 조사
-		for(int i = 0; i < 8 ; i++) {
+		for(int i = 0; i < d[crow].length ; i++) {
 			if(d[crow][i] == 1) return false;
 		}
 		return true;
 	}
 
 	public static boolean checkCol(int[][] d, int ccol) {// 배열 d에서 열 ccol에 퀸을 배치할 수 있는지 조사
-		for(int i = 0 ; i < 8 ; i++) {
+		for(int i = 0 ; i < d.length ; i++) {
 			if(d[i][ccol] == 1) return false;
 		}
 		return true;
@@ -194,37 +218,83 @@ public class train_QueenEight_구현실습과제 {
 
 //배열 d에서 행 cx, 열 cy에 퀸을 남서, 북동 대각선으로 배치할 수 있는지 조사
 	public static boolean checkDiagSW(int[][] d, int cx, int cy) { // x++, y-- or x--, y++ where 0<= x,y <= 7
+		int x = cx;
+		int y = cy;
 		while(true) {
-		cx++;
-		cy--;
-		if(0 <= cx && cx <= 7 && 0 <= cy && cy <= 7) {
-			
+			x++;
+			y--;
+			if(0 <= x && x <= 7 && 0 <= y && y <= 7) {
+				if(d[x][y] == 1) return false;
+			}
+			else break;
 		}
+		x = cx;
+		y = cy;
+		while(true) {
+			x--;
+			y++;
+			if(0 <= x && x <= 7 && 0 <= y && y <= 7) {
+				if(d[x][y] == 1) return false;
+			} 
+			else break;
+
+		}
+		return true;
+		
 	}
 
 //배열 d에서 행 cx, 열 cy에 퀸을 남동, 북서 대각선으로 배치할 수 있는지 조사
 	public static boolean checkDiagSE(int[][] d, int cx, int cy) {// x++, y++ or x--, y--
-
+		int x = cx;
+		int y = cy;
+		while(true) {
+			x++;
+			y++;
+			if(0 <= x && x <= 7 && 0 <= y && y <= 7) {
+				if(d[x][y] == 1) return false;
+			}
+			else break;
+		}		
+		x = cx;
+		y = cy;
+		
+		while(true) {
+			x--;
+			y--;
+			if(0 <= x && x <= 7 && 0 <= y && y <= 7) {
+				if(d[x][y] == 1) return false;
+			}
+			else break;
+		}
+		return true;
 	}
 
 //배열 d에서 (x,y)에 퀸을 배치할 수 있는지  조사
 	public static boolean checkMove(int[][] d, int x, int y) {// (x,y)로 이동 가능한지를 check 가로 세로 대각선 함수로 체크
-			return checkRow(d,x) && checkCol(d,y);
+			return checkRow(d,x) && checkCol(d,y) && checkDiagSW(d,x,y) && checkDiagSE(d,x,y);
 	}
 
 //배열 d에서 현재 위치(row,col)에 대하여 다음에 이동할 위치 nextCol을 반환, 이동이 가능하지 않으면 -1를 리턴
 	public static int nextMove(int[][] d, int row, int col) {// 현재 row, col에 대하여 이동할 col을 return
-		for(int i = 0 ; i < 8 ; i++) {
-			if(checkMove(d,row,i)) 
+		for(int i = col ; i < d.length ; i++) {
+			if(checkMove(d,row,i)) {
+				return i;
+			}
 		}
-		else return -1;
+		return -1;
 	}
 
 	static void showQueens(int[][] data) {// 배열 출력
+		for(int i = 0 ; i < data.length ; i++) {
+			for(int j = 0 ; j < data[i].length ; j++) {
+				System.out.print(data[i][j] + ", ");
+			}
+			System.out.println();
+		}
 
 	}
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws EmptyGenericStackException {
 		int row = 8, col = 8;
 		int[][] data = new int[8][8];
 		for (int i = 0; i < data.length; i++)
