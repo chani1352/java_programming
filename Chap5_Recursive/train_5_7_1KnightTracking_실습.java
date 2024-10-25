@@ -28,7 +28,7 @@ class Offsets4 {
 }
 public class train_5_7_1KnightTracking_실습 {
 	static Offsets4[] moves = new Offsets4[8];//static을 선언하는 이유를 알아야 한다
-    static final int N = 8;
+    static final int N = 6;
 
 	
     // 체스판 배열

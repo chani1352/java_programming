@@ -10,7 +10,7 @@ package Chap5_Recursive;
 public class train_5_5_1마방진_실습 {
 
     public static void main(String[] args) {
-        int n = 3; // 마방진의 크기
+        int n = 7; // 마방진의 크기
         int[][] magicSquare = new int[n][n];
 /*
  * 루벤스의 방법 단계:
@@ -25,7 +25,12 @@ public class train_5_5_1마방진_실습 {
         int row = 0, col = n / 2; // 시작 위치
         for (int num = 1; num <= n * n; num++) {
             magicSquare[row][col] = num; // 현재 위치에 숫자 배치
-            //구현
+            if(magicSquare[(row+n*2-1)%n][(col+1)%n] != 0) {
+            	row = (row+1)%n;
+            } else {
+            	row = (row+n*2-1)%n;
+            	col = (col+1)%n;
+            }
         }
 
         // 마방진 출력
@@ -39,11 +44,34 @@ public class train_5_5_1마방진_실습 {
 
     // 마방진 출력 메서드
     static void showSquare(int[][] magicSquare) {
-    	//구현
+    	for(int i = 0 ; i < magicSquare.length ; i++) {
+    		for(int j = 0 ; j < magicSquare.length ; j++) {
+    			System.out.print(magicSquare[i][j] + "\t");
+    		}
+    		System.out.println();
+    	}
     }
 
     // 마방진 유효성 검증 메서드
     static boolean checkSquare(int[][] magicSquare, int magicSum) {
-    	// 구현 
+//    	int[] check1 = new int[magicSquare.length*2+2];
+//    	int[] check2 = new int[magicSquare.length*2+2];
+    	int check1 = 0;
+    	int check2 = 0;
+    	int check3 = 0;
+    	int check4 = 0;
+    
+    	for(int i = 0 ; i < magicSquare.length ; i++) {
+    		for(int j = 0 ; j < magicSquare.length ; j++) {
+    			check1 += magicSquare[i][j];
+    			check2 += magicSquare[j][i];
+    			check3 += magicSquare[j][j];
+    			check4 += magicSquare[magicSquare.length-j-1][j];
+    		}
+    		if(check1 != magicSum || check2 != magicSum || check3 != magicSum || check4 != magicSum) return false;
+        	check1 = 0; check2 = 0; check3 = 0; check4 = 0;
+    	}
+    	return true;
+    		
     }
 }
