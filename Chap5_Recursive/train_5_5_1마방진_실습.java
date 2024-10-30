@@ -10,7 +10,7 @@ package Chap5_Recursive;
 public class train_5_5_1마방진_실습 {
 
     public static void main(String[] args) {
-        int n = 7; // 마방진의 크기
+        int n = 5; // 마방진의 크기
         int[][] magicSquare = new int[n][n];
 /*
  * 루벤스의 방법 단계:
@@ -25,10 +25,10 @@ public class train_5_5_1마방진_실습 {
         int row = 0, col = n / 2; // 시작 위치
         for (int num = 1; num <= n * n; num++) {
             magicSquare[row][col] = num; // 현재 위치에 숫자 배치
-            if(magicSquare[(row+n*2-1)%n][(col+1)%n] != 0) {
+            if(magicSquare[(row+n-1)%n][(col+1)%n] != 0) {
             	row = (row+1)%n;
             } else {
-            	row = (row+n*2-1)%n;
+            	row = (row+n-1)%n;
             	col = (col+1)%n;
             }
         }
