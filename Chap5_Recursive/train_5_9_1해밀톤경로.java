@@ -30,35 +30,50 @@ class Graph {
             int currentVertex = stack.peek();
             System.out.println("node=" + currentVertex);
 
-            if (pos == numVertex) {
+            if (pos == numVertex+1) {
+            	int count = 0;
+            	int num = 0;
+          		System.out.print("0->");
+            	while(count <6) {
+            		System.out.print(path[num] + "->");
+            		num = path[num];
+            		count++;
+            	}
+            	System.out.println();
             	System.out.println("경로 찾다");
             	return true;
             }
             
             boolean foundNext = false;
             for (int i = path[currentVertex]+1; i < numVertex; i++) {
+                if(pos == numVertex) {
+             	   if(graph[stack.peek()][0] == 1) {
+             		   stack.remove(0);
+             	   } else {
+             		   break;
+             	   }
+                }
             	if(isSafe(currentVertex,i)) {
             		stack.push(i);
-            		path[i] = 0;
+            		path[currentVertex] = i;
             		pos++;
             		foundNext =true;
-            	}
-              	
+            		break;
+            	}     	
             }
-//            if (!foundNext) {
-//                // Backtrack
-//
-//            }
-
-        }
+              
+            if (!foundNext) {
+               path[currentVertex] = -1;
+               stack.pop();
+               pos--;
+               }
+            }
         System.out.println("해밀턴 경로 없다.");
         return false;
     }
 
     boolean isSafe(int currentNode, int nextNode) {
-        // 새로 방문할 노드 v가 이전에 방문할 노드에 연결되었는지 검사
-        //  새로 방문할 노드가 이전 경로에 있는지 조사
-    	if((graph[currentNode][nextNode] == 1) && (stack.search(nextNode) != -1)) 
+    	if((graph[currentNode][nextNode] == 1) && (stack.search(nextNode) == -1)) 
     		return true;
     	return false;
     }
@@ -84,5 +99,8 @@ public class train_5_9_1해밀톤경로 {
         
         Graph g = new Graph(graph);
         g.findPath(0);
+
+        
+        
     }
 }

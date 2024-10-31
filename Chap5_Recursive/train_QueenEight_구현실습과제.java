@@ -176,9 +176,9 @@ public class train_QueenEight_구현실습과제 {
 			if ((iy = nextMove(d, ix, iy)) == -1) {// 다음 이동할 열을 iy로 주는데 -1이면 더이상 이동할 열이 없음을 나타냄
 				p = st.pop();
 				d[p.getIx()][p.getIy()] = 0;
-				ix--;	
+				ix =p.getIx();
 				iy = p.getIy() + 1;	
-				count-=1;
+				count--;
 				continue;
 			}
 	
@@ -186,17 +186,17 @@ public class train_QueenEight_구현실습과제 {
 			d[ix][iy] = 1;
 			ix++;
 			iy=0;
-			count +=1;
+			count++;
 			
 			if (count == 8) { // 8개를 모두 배치하면
-				numberOfSolutions +=1;	
+				numberOfSolutions++;	
 				showQueens(d);
 				System.out.println("갯수 : " +numberOfSolutions);
 				p = st.pop();
 				d[p.getIx()][p.getIy()] = 0;
 				ix--;	
 				iy = p.getIy() + 1;		
-				count -=1;
+				count--;
 			}
 		}
 	}

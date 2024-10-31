@@ -17,16 +17,33 @@ class PhyscData implements Comparable<PhyscData>{
 
 	@Override
 	public int compareTo(PhyscData o) {
-		return 0;
-	}  
-    
-    
+		if(name.compareTo(o.name) == 0 ) {
+			if(height == o.height) {
+				return (vision < o.vision) ? -1 : 1; 
+			} else return (height < o.height) ? -1 : 1;
+		} else return name.compareTo(o.name);
+	}
 }
 
 public class train_실습과제6_2_객체merge정렬 {
 	// --- 배열 요소 a[idx1]와 a[idx2]의 값을 교환 ---//
 	static void merge(PhyscData[] a, int lefta, int righta, int leftb, int rightb ) {
+		PhyscData[] temp = new PhyscData[10];
+		int ix = 0;
+		int la = lefta;
+		int lb = leftb;
+		while(la <= righta && lb <= rightb) {
+			if(a[la].compareTo(a[lb]) < 0) temp[ix++] = a[la++]; 
+			else temp[ix++] = a[lb++];
+		}
+		while(la <= righta) temp[ix++] = a[la++];
 
+		while(lb <= rightb) temp[ix++] = a[lb++];		
+
+		for(int i = 0 ; i < ix ; i++) {
+			a[lefta+i] = temp[i];  
+		}
+		
 
 	}
 
