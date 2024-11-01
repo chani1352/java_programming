@@ -11,7 +11,7 @@ interface MaxHeap {
 class Heap implements MaxHeap {
 	final int heapSize = 100;
 	private int[] heap;
-	private int n = 1; // MaxHeap의 현재 입력된 element 개수
+	private int n = 0; // MaxHeap의 현재 입력된 element 개수
 	private int MaxSize; // Maximum allowable size of MaxHeap
 	
 	public Heap(int sz) {
@@ -29,16 +29,26 @@ class Heap implements MaxHeap {
 			HeapFull();
 			return;
 		}
-		int index = n;
-		heap[index] = x;
-		while((index/2) > 0) {
-			i = heap[index];
-			if(heap[index] > heap[index/2]) {
-				heap[index] = heap[index/2];
-				heap[index/2] = i;
-				index = index/2;
-			}
+		n++;
+		heap[n] = x;
+		for(i = n; i > 1 ; i/=2) {
+			if(i ==1) break;
+			if(heap[n] <= heap[n/2]) break;
+			heap[i] = heap[i/2];			
 		}
+		
+		
+		
+//		int index = n;
+//		heap[index] = x;	
+//		while((index/2) > 0) {
+//			i = heap[index];
+//			if(heap[index] > heap[index/2]) {
+//				heap[index] = heap[index/2];
+//				heap[index/2] = i;
+//				index = index/2;
+//			}
+//		}
 	}
 	@Override
 	public int DeleteMax() {//heap에서 가장 큰 값을 삭제하여 리턴한다. 
@@ -49,6 +59,19 @@ class Heap implements MaxHeap {
 			int elm = 0;
 			return elm;
 		}
+		i = 1;
+		j = 2;
+		x = heap[1];
+		int k = heap[n];
+		n--;	
+		while(j <= n) {
+			if(heap[j] < heap[j+1]) j++;
+			if(x >= heap[j]) break;
+			heap[i] = heap[j];
+			i = j ;
+			j *= 2;
+		}
+		heap[i] = k;
 	
 		return x;
 	}

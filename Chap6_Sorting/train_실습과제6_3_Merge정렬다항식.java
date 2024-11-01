@@ -12,20 +12,21 @@ class Polynomial3 implements Comparable<Polynomial3>{
     Polynomial3(double coef, int exp) {
         this.coef = coef;  this.exp = exp; 
     }
-
+	@Override
+	public int compareTo(Polynomial3 o) {
+		return exp == o.exp ? 0 : exp > o.exp ? 1 : -1;
+	} 
 }
 public class train_실습과제6_3_Merge정렬다항식 {
 
-	// --- 배열 요소 a[idx1]와 a[idx2]의 값을 교환 ---//
 	static void merge(Polynomial3[] a, int lefta, int righta, int leftb, int rightb ) {
-		 //body를 지우고 작성 훈련 연습이 도움이 된다 
 		Polynomial3 temp[] = new Polynomial3[30];
 		//구현코드
 		int la = lefta;
 		int lb = leftb;
 		int x = 0;
 		while(la <= righta && lb <= rightb) {
-			if(a[la].exp > a[lb].exp) temp[x++] = a[la++];
+			if(a[la].compareTo(a[lb]) > 0) temp[x++] = a[la++];
 			else temp[x++] = a[lb++];
 		}		
 		while(la <= righta) temp[x++] = a[la++];
@@ -47,9 +48,7 @@ public class train_실습과제6_3_Merge정렬다항식 {
 		return;
 	}
 	static void ShowPolynomial(String str, Polynomial3[] x, int count) {
-		//str 변수는 다항식 이름으로 스트링이다
-		//count가 -1이면 다항식 x의 length로 계산하고 -1이면 count가 다항식 항의 숫자이다 
-		//정렬후 다항식 x = 2.5x**7  + 3.8x**5  + 3.1x**4  + 1.5x**3  + 3.3x**2  + 4.0x**1  + 2.2x**0 
+	
 		int n = 0;
 		if (count < 0)
 			n = x.length;
@@ -61,45 +60,60 @@ public class train_실습과제6_3_Merge정렬다항식 {
 		}
 		System.out.println(x[n-1].coef + "x**" + x[n-1].exp);		
 	}
-	static int AddPolynomial(Polynomial3[]x,Polynomial3[]y,Polynomial3[]z) {
-		//z = x + y, 다항식 덧셈 결과를 z로 주고 z의 항의 수 terms을 리턴한다 
+	static int AddPolynomial(Polynomial3[]x,Polynomial3[]y,Polynomial3[]z) {		
 		int p=0,q=0,r=0;
 		int terms = 0;
 		//구현코드
-		for(int i = 0 ; i < x.length ; i++) {
-			z[i] = x[i];
-			terms++;
+		while(p <= x.length-1 && q <= y.length-1) {
+			if(x[p].compareTo(y[q]) > 0) {
+				z[r++] = x[p++];
+				terms++;
+			}
+			else if(x[p].compareTo(y[q]) < 0) {
+				z[r++] = y[q++];
+				terms++;
+			}
+			else {
+				z[r] = new Polynomial3(x[p].coef,x[p].exp);
+				p++;
+				z[r++].coef += y[q++].coef;
+				terms++;
+			}
 		}
 		
-		for(int i = 0 ; i < y.length ; i++) {
-			for(int j = 0 ; j < x.length ; j++) {
-				if(x[j].coef == y[i].coef) {
-					z[j].exp += y[i].exp;
-					break;
-				}
-			z[x.length+i] = y[i];
+		while(p <= x.length-1) {
+			z[r++] = x[p++];
 			terms++;
-			}	
 		}
-		System.out.println(terms);
-		MergeSort(z,0,terms-1);
+		while(q <= y.length-1) {
+			z[r++] = y[q++];
+			terms++;
+		}
 		return terms;
 	}
 	static int addTerm(Polynomial3[]z, Polynomial3 term, int terms) {
-		//다항식 z에 새로운 항 term을 추가한다. 지수가 같은 항이 있으면 계수만 합한다
-		//추가된 항의 수를 count하여 terms으로 리턴한다.
 		//구현코드
+		for(int i = 0 ; i < terms ; i++) {
+			if(z[i].compareTo(term) == 0) {
+				z[i].coef += term.coef;
+				return terms;
+			}
+		}
+		z[terms] = term;
 		return ++terms;
 			
 	}
 	static int MultiplyPolynomial(Polynomial3[]x,Polynomial3[]y,Polynomial3[]z) {
-		//z = x * y, 다항식 z의 항의 수는 terms으로 리턴한다 
-		//terms = addTerm(z, term, terms);사용하여 곱셈항을 추가한다.
 		int p=0,q=0,r=0;
 		int terms = 0;
+		Polynomial3 term;
 		//구현코드
-		
-		
+		for(int i = 0 ; i < x.length ; i++) {
+			for(int j = 0 ; j < y.length ; j++) {
+				term = new Polynomial3(x[i].coef * y[j].coef,x[i].exp+ y[j].exp);
+				terms = addTerm(z,term,terms);
+			}
+		}
 		return terms;
 	}
 	static double EvaluatePolynomial(Polynomial3[]z, int zTerms, int value) {
@@ -107,6 +121,9 @@ public class train_실습과제6_3_Merge정렬다항식 {
 		//다항식 계산 결과를 double로 리턴한다 
 		double result = 0.0;
 		//구현 코드
+		for(int i = 0 ; i < zTerms ; i++) {
+			result += Math.pow(value, z[i].exp) * z[i].coef;
+		}	
 		return result;
 	}
 	public static void main(String[] args) {
@@ -145,12 +162,11 @@ public class train_실습과제6_3_Merge정렬다항식 {
 	
 		int zTerms = AddPolynomial(x,y,z);//다항식 덧셈 z = x + y
 		ShowPolynomial("덧셈후 다항식 z = ", z, zTerms);
-
 		
 		zTerms = MultiplyPolynomial(x,y,z);//다항식 곱셈 z = x * y
-		MergeSort(z, 0, zTerms); // 배열 x를 퀵정렬
+		MergeSort(z, 0, zTerms-1); // 배열 x를 퀵정렬
 		ShowPolynomial("곱셈후 다항식 z = ", z, zTerms);
-		double result = EvaluatePolynomial(z, zTerms, 1);//다항식 값 계산 함수 z(10) 값 계산한다 
+		double result = EvaluatePolynomial(z, zTerms, 10);//다항식 값 계산 함수 z(10) 값 계산한다 
 		System.out.println(" result = " + result );
 	}
 }
