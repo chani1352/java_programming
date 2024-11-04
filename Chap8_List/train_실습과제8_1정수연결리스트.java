@@ -25,13 +25,28 @@ class LinkedList1 {
 	{
 		Node1 q, current = first;
 		q = current;
-	
+		while(current != null) {
+			if(current.data != element) {
+				q = current;
+				current = current.link;
+				}	
+			 else {
+				q.link = current.link;
+				return true;	
+			}
+		}
+		return false;
 	}
 
 	public void Show() { // 전체 리스트를 순서대로 출력한다.
 		Node1 p = first;
 		int num = 0;
-
+		while(true) {
+			if(p != null) {
+				System.out.println(p.data);
+				p = p.link;
+			} else break;
+		}
 	}
 
 	public void Add(int element) // 임의 값을 삽입할 때 리스트가 오름차순으로 정렬이 되도록 한다
@@ -42,26 +57,60 @@ class LinkedList1 {
 			first = newNode;
 			return;
 		}
-
+		Node1 p = first;
+		Node1 q = null;
+		while(p != null) {
+			if(element > p.data) {
+				q = p;
+				p = p.link;
+				if(p == null) {
+					q.link = newNode;
+					return;
+				}
+			} else {
+				newNode.link = p;
+				if(q == null) {
+					first = newNode;
+					return;
+				}
+				else {
+				q.link = newNode;
+				return;
+				}
+			}			
+		}
 	}
 
-	public boolean Search(int data) { 전달된 data 값을 찾아 존재하면 true로 리턴, 없으면 false로 리턴
+	public boolean Search(int data) {// 전달된 data 값을 찾아 존재하면 true로 리턴, 없으면 false로 리턴
 		Node1 ptr = first;
-
+		while(ptr != null) {
+			if(ptr.data == data) return true;
+			else ptr = ptr.link;
+		}
 		return false;
 	}
 	void Merge(LinkedList1 b) {
-		/*
-		 * 연결리스트 a,b에 대하여 a = a + b
-		 * merge하는 알고리즘 구현으로 in-place 방식으로 합병/이것은 새로운 노드를 만들지 않고 합병하는 알고리즘 구현
-		 * 난이도 등급: 최상
-		 * a = (3, 5, 7), b = (2,4,8,9)이면 a = (2,3,4,5,8,9)가 되도록 구현하는 코드
-		 */
+		Node1 la = first;
+		Node1 lap = la;
+		Node1 lb = b.first;
+		Node1 lbp = la;
+		while(la !=null && lb!=null) {
+			if(la.data < lb.data) {
+				lap = la.link;
+				la.link = lb;
+				la = lap;
+				continue;
+			} else {
+				lbp = lb.link;
+				lb.link = la;
+				lb = lbp;
+			}		
+		}
 
 	}
 }
 
-public class 실습9_1정수연결리스트 {
+public class train_실습과제8_1정수연결리스트 {
 	enum Menu {
 		Add("삽입"), Delete("삭제"), Show("인쇄"), Search("검색"), Merge("합병"), Exit("종료");
 
@@ -115,8 +164,9 @@ public class 실습9_1정수연결리스트 {
 		do {
 			switch (menu = SelectMenu()) {//Menu 생성자 호출 - menu 객체를 리턴한다 
 			case Add: // 난수를 삽입하는데 올림차순으로 정렬되도록 구현
-				for (int i =0; i < count; i++) {
+				for (int i =0; i < count ; i++) {
 					data = rand.nextInt(100);
+					System.out.println(data);
 					l.Add(data);
 				}
 				break;
