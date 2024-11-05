@@ -21,6 +21,10 @@ class SimpleObject5 {
 	public SimpleObject5() {
 		no = null;name = null;
 	}
+	public int getNo() {
+		return Integer.parseInt(no);
+	}
+	
 	// --- 데이터를 읽어 들임 ---//
 	void scanData(String guide, int sw) {//sw가 3이면 11 비트 연산 >  NO, NAME을 모두 입력받는다 
 		Scanner sc = new Scanner(System.in);
@@ -74,12 +78,33 @@ class LinkedList2 {
 	{
 		Node2 q, current = first;
 		q = current;
+		while(current != null) {
+			if(cc.compare(current.data, element) != 0) {
+				q = current;
+				current = current.link;
+			}else {
+				if(cc.compare(q.data, current.data) == 0) {
+					current = current.link;
+					first = current;
+				} else {
+				q.link = current.link;
+				}
+				return element.getNo();
+			}
+		}
 
 		return -1;// 삭제할 대상이 없다.
 	}
 	public void Show() { // 전체 리스트를 순서대로 출력한다.
 		Node2 p = first;
 		SimpleObject5 so;
+		while(true) {
+			if(p != null) {
+				System.out.println(p.data.toString());
+				p = p.link;
+			} else break;
+			
+		}
 
 	}
 	public void Add(SimpleObject5 element, Comparator<SimpleObject5> cc) 
@@ -91,25 +116,73 @@ class LinkedList2 {
 			first = newNode;
 			return;
 		}
-
+		Node2 p = first;
+		Node2 q = null;
+		while(p != null) {
+			if(cc.compare(element, p.data) == 1) {
+				q = p;
+				p = p.link;
+				if(p == null) {
+					q.link = newNode;
+					return;
+				}
+			} else {
+				newNode.link = p;
+				if(q == null) {
+					first = newNode;
+					return;
+				} else {
+					q.link = newNode;
+					return;
+				}
+			}
+		}
 	}
 	public boolean Search(SimpleObject5 element, Comparator<SimpleObject5> cc) { 
 		// 전체 리스트를 올림차순 순서대로 출력한다.
 		Node2 q, current = first;
 		q = current;
+		boolean check = false;
+		while(current != null) {
+			if(cc.compare(current.data, element) == 0) {
+				System.out.println(current.data.toString());
+				check = true;
+			}
+			current = current.link;
+		}
+		
+		return check;
 
-		return false;
 	}
 	void Merge(LinkedList2 b, Comparator<SimpleObject5> cc) {
-		/*
-		 * 연결리스트 a,b에 대하여 a = a + b
-		 * merge하는 알고리즘 구현으로 in-place 방식으로 합병/이것은 새로운 노드를 만들지 않고 합병하는 알고리즘 구현
-		 * 난이도 등급: 최상급
-		 * 회원번호에 대하여 a = (3, 5, 7), b = (2,4,8,9)이면 a = (2,3,4,5,8,9)가 되도록 구현하는 코드
-		 */
+		Node2 aCurrent = first;
+		Node2 bCurrent = b.first;
+		Node2 aq = null;
+		
+		while(aCurrent != null && bCurrent != null) {
+			if(cc.compare(bCurrent.data, aCurrent.data) == -1) {
+				Node2 temp = bCurrent.link;
+				bCurrent.link = aCurrent;
+				if(aq == null) {
+					first = bCurrent;
+				} else {
+					aq.link = bCurrent;
+				}
+				aq = bCurrent;
+				bCurrent = temp;
+			} else {
+				aq = aCurrent;
+				aCurrent = aCurrent.link;	
+			}
+		}
+		
+		if(aCurrent == null) {
+			aq.link = bCurrent;
+		}
+		
 	}
 }
-public class 실습9_2객체연결리스트 {
+public class train_실습과제8_2객체연결리스트 {
 
 	enum Menu {
 		Add( "삽입"), Delete( "삭제"), Show( "인쇄"), Search( "검색"), Merge("합병"), Exit( "종료");

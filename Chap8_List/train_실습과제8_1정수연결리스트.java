@@ -90,23 +90,62 @@ class LinkedList1 {
 		return false;
 	}
 	void Merge(LinkedList1 b) {
-		Node1 la = first;
-		Node1 lap = la;
-		Node1 lb = b.first;
-		Node1 lbp = la;
-		while(la !=null && lb!=null) {
-			if(la.data < lb.data) {
-				lap = la.link;
-				la.link = lb;
-				la = lap;
-				continue;
+		Node1 p = first;
+		Node1 q = b.first;
+		Node1 pre = null;	
+		
+		
+		while(p != null && q != null) {
+			if(q.data < p.data) {
+				Node1 tmp = q.link;
+				q.link = p;
+				
+				if(pre == null) {
+					first = q;
+				} else {
+					pre.link = q;
+				}
+				
+				pre = q;		
+				q  = tmp;
+			
 			} else {
-				lbp = lb.link;
-				lb.link = la;
-				lb = lbp;
-			}		
+				pre = p;
+				p = p.link;
+				
+			}
 		}
-
+		
+		if(p == null) {
+			pre.link = q;
+		}
+		b.first = null;
+		
+//		while(p != null && q != null) {
+//			if(q.data < p.data) {
+//				Node1 tmp = q.link;
+//				q.link = p;
+//				
+//				if(pre == null) {
+//					first = q;
+//				} else {
+//					pre.link = q;
+//				}
+//				
+//				pre = q;		
+//				q  = tmp;
+//			
+//			} else {
+//				pre = p;
+//				p = p.link;
+//				
+//			}
+//		}
+//		
+//		if(p == null) {
+//			pre.link = q;
+//		}
+//		b.first = null;
 	}
 }
 
