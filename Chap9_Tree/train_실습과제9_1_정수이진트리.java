@@ -27,12 +27,17 @@ class ObjectStack5{
 	//--- 실행시 예외: 스택이 비어있음 ---//
 	// generic class는 Throwable을 상속받을 수 없다 - 지원하지 않는다
 	public class EmptyGenericStackException extends Exception {
+		EmptyGenericStackException(String msg){
+			super(msg);
+		}
 
 	}
 
 	//--- 실행시 예외: 스택이 가득 참 ---//
 	public class OverflowGenericStackException extends RuntimeException {
-
+		OverflowGenericStackException(String msg){
+			super(msg);
+		}
 	}
 
     private List<TreeNode5> data;  // list를 사용: 배열은 크기를 2배로 늘리는 작업 필요 
@@ -42,23 +47,34 @@ class ObjectStack5{
 
 //--- 생성자(constructor) ---//
 	public ObjectStack5(int capacity) {
-
+		this.capacity = capacity;
+		data = new ArrayList<>();
+		top = 0;
 	}
 
 //--- 스택에 x를 푸시 ---//
 	public boolean push(TreeNode5 x) throws OverflowGenericStackException {
-
-
+		if(isFull()) 
+			throw new OverflowGenericStackException("push : stack overflow");
+		data.add(x);
+		top++;
+		return true;
 	}
 
 //--- 스택에서 데이터를 팝(정상에 있는 데이터를 꺼냄) ---//
 	public TreeNode5 pop() throws EmptyGenericStackException  {
+		if(isEmpty()) 
+			throw new EmptyGenericStackException("pop : stack empty");
+		top--;
+		return data.remove(top);
 
 	}
 
 //--- 스택에서 데이터를 피크(peek, 정상에 있는 데이터를 들여다봄) ---//
 	public TreeNode5 peek() throws EmptyGenericStackException  {
-
+		if(isEmpty())
+			throw new EmptyGenericStackException("peek : stack empty");
+		return data.get(top-1);
 	}
 
 //--- 스택을 비움 ---//
@@ -68,7 +84,7 @@ class ObjectStack5{
 
 //--- 스택에서 x를 찾아 인덱스(없으면 –1)를 반환 ---//
 	public int indexOf(TreeNode5 x) {
-
+		
 	}
 
 //--- 스택의 크기를 반환 ---//
@@ -83,12 +99,12 @@ class ObjectStack5{
 
 //--- 스택이 비어있는가? ---//
 	public boolean isEmpty() {
-
+		return top <= 0;
 	}
 
 //--- 스택이 가득 찼는가? ---//
 	public boolean isFull() {
-
+		return top >= capacity;
 	}
 
 //--- 스택 안의 모든 데이터를 바닥 → 꼭대기 순서로 출력 ---//

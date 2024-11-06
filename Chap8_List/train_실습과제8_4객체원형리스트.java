@@ -104,6 +104,16 @@ class CircularList {
 	public void Add(SimpleObject3 element, Comparator<SimpleObject3> cc) // 임의 값을 삽입할 때 리스트가 오름차순으로 정렬이 되도록 한다
 	{
 		Node3 newNode = new Node3(element);
+		if(first == null) {
+			first = newNode;
+			return;
+		}
+		Node3 p = first;
+		Node3 q = first;
+		if(cc.compare(element, p.data) == 1) {
+			p = p.link;
+			p = newNode;
+		}
 	
 	}
 

@@ -6,10 +6,10 @@ public class Test07_문자열분리 {
 		String s = "한국,일본,중국,미국,독일,프랑스";
 
 		String[] list = s.split(",");
-		String[] list2 = s.split(",", 2);//2개로 분리
+		String[] list2 = s.split(",", 3);//2개로 분리
 
 		for (String item : list) {
-			System.out.print(" " + item);
+			System.out.println(" " + item);
 		}
 		System.out.println("\nlist length = "+list.length);
 		System.out.println("=====================");

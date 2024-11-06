@@ -1,17 +1,23 @@
 package Chap9_Tree;
-
+/*
+ * 집합 트리
+ * 집합 원소를 제거하는 delete() 추가, 집합 세트를 출력하는 displaySets()를 추가함
+ */
 import java.util.Arrays;
 
-class Sets {
+class Sets3 {
     private int[] parent;
     private int n;
 
-    public Sets(int sz) {
+    public Sets3(int sz) {
         n = sz;
-        parent = new int[sz + 1]; // 집합 1 ~ N
-        Arrays.fill(parent, -1);  //  -1로 초기화
+        parent = new int[sz + 1]; // Don't want to use parent[0]
+        Arrays.fill(parent, -1);  // Initialize with -1
     }
+    void displaySets() {
+    	//{1,2,3} 등으로 set을 표시하기
 
+    }
     public void display() {
         System.out.print("display:index=  ");
         for (int i = 1; i <= n; i++) {
@@ -26,49 +32,38 @@ class Sets {
         System.out.println();
     }
     public void delete(int n) {
-        if (n < 1 || n > this.n) {
-            System.out.println("Invalid element index.");
-            return;
-        }
-
-        //삭제할 element의 root를 찾는다
-
-
-        // 같은 집합의 모든 elements의 parent가 n이면 root를 가리키게 한다
-
-
-        // 삭제 처리는 -1로 표시하여 삭제 처리
-
+    	//n이 root이거나 non-leaf 일 문제 해결 필요
+  
     }
 
     public void simpleUnion(int i, int j) {
-        // i,j의 root를 찾아 union
+        // Replace the disjoint sets with roots i and j, i != j with their union
         i = simpleFind(i);
         j = simpleFind(j);
         if (i == j) return;
-        //simple union 구현
+
 
     }
 
     public int simpleFind(int i) {
-        // i를 포함한 집합의 root를 반환
+        // Find the root of the tree containing element i
 
-        return i;
     }
 
     public void weightedUnion(int i, int j) {
-        // i, j가 속한 집합의 root를 찾아 union, 단 집합갯수가 작은 것이 child로 union
+        // Union sets with roots i and j, using the weighting rule.
         i = simpleFind(i);
         j = simpleFind(j);
         if (i == j) return;
-        // union 구현
 
     }
+    //void difference() 차집합 -  이 문제는 disjoint set을 가정하므로 가정 변경이 필요
+    //void intersection()교집합
 
 }
 public class train_실습과제9_3_집합트리 {
     public static void main(String[] args) {
-        Sets m = new Sets(20);
+        Sets3 m = new Sets3(20);
         m.simpleUnion(7, 1);
         m.simpleUnion(2, 3);
         m.simpleUnion(4, 5);
@@ -85,21 +80,26 @@ public class train_실습과제9_3_집합트리 {
         m.simpleUnion(13, 15);
         System.out.println("SimpleUnion() 실행 결과::");
         m.display();
-
-        m.weightedUnion(1, 2);
+        m.displaySets();
+        m.weightedUnion(1, 8);
         m.weightedUnion(1, 4);
         m.weightedUnion(3, 9);
         m.weightedUnion(7, 15);
         m.weightedUnion(12, 18);
         m.weightedUnion(4, 16);
         System.out.println("WeightedUnion() 실행 결과::");
+        m.display();
+        m.displaySets();
         if (m.simpleFind(2) == m.simpleFind(18))
         	System.out.println("2, 18은 같은 집합이다");
         else
         	System.out.println("2, 18은 다른 집합이다");
+
+        System.out.println("***3를 집합에서 삭제한다***");
+        m.delete(3);//root를 삭제할 때 문제 있다
         m.display();
-        System.out.println("***2를 집합에서 삭제한다***");
-        m.delete(2);
+        m.displaySets();
+        
         if (m.simpleFind(2) == m.simpleFind(18))
         	System.out.println("2, 18은 같은 집합이다");
         else
@@ -107,3 +107,4 @@ public class train_실습과제9_3_집합트리 {
         
     }
 }
+
