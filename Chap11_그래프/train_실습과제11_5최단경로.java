@@ -12,20 +12,37 @@ class Graph5 {
     private boolean[] s = new boolean[NMAX];
     private final int n;
     public Graph5(int nodeSize) {
-
+    	this.n = nodeSize;
+    	for(int i = 0 ; i < NMAX ; i++) {
+    		for(int j = 0 ; j < NMAX ; j++) {
+    			length[i][j] = MAX_WEIGHT;
+    		}
+    	}
     }
 
 
     public void insertEdge(int start, int end, int weight) { // 인서트엣지하면 length로
-  
+    	length[start][end] = weight;
     }
 
     public void displayConnectionMatrix() {
- 
+    	for(int i = 0 ; i < n ; i++) {
+    		for(int j = 0 ; j < n ; j++) {
+    			if(length[i][j] != 0) {
+    				System.out.println("[" + i + "]" + " -> [" + j + "] : " + length[i][j]);
+    			}
+    		}
+			System.out.println("-".repeat(20));
+    	}
     }
 
     public boolean isNonNegativeEdgeCost() {
- 
+    	for(int i = 0 ; i < n ; i++) {
+    		for(int j = 0 ; j < n ; j++) {
+    			if(length[i][j] < 0) return false;
+    		}
+    	}
+    	return true;
     }
 
     public void shortestPath(int startNode) {
@@ -37,14 +54,28 @@ class Graph5 {
         dist[startNode] = 0;
 
         for (int i = 0; i < n - 1; i++) {
-    
+        	int u = choose();
+        	s[u] = true;
+        	for(int j = 0 ; j < n ; j++) {
+        		if(!s[j]) {
+        			if(dist[u] + length[u][j] < dist[j])
+        				dist[j] = dist[u] + length[u][j];
+        		}
+        	}
         }
         printDistances(startNode);
     }
 
     private int choose() {
         int minDist = MAX_WEIGHT;
-   
+        int index = -1;
+        for(int i = 0 ; i < n ; i++) {
+        	if((!s[i]) && (dist[i] < minDist)) {
+        		minDist = dist[i];
+        		index = i;
+        	}
+        }
+        return index;
     }
 
     private void printDistances(int startNode) {
@@ -83,7 +114,7 @@ public class train_실습과제11_5최단경로 {
             {0, 300, 1000, 0, 0, 0, 0, 1700},
             {300, 0, 800, 0, 0, 0, 0, 0},
             {1000, 800, 0, 1200, 0, 0, 0, 0},
-            {0, 0, 0, 1200, 1500, 1000, 0, 0},
+            {0, 0, 0, 0 , 1500, 1000, 0, 0},
             {0, 0, 0, 1500, 0, 250, 0, 0},
             {0, 0, 0, 1000, 250, 0, 900, 1400},
             {0, 0, 0, 0, 0, 900, 0, 1000},

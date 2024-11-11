@@ -1,17 +1,16 @@
 package test;
 
+import java.util.Arrays;
+
 public class Main{
 	public static void main(String[] args) {
-		String s = "한국,일본,중국,미국";
-		String[] list = s.split(",");
-		for(String item : list) {
-			System.out.println(item);
-		}
+		Integer[] arr = {1,3,6,4,2};
+		Arrays.sort(arr);
 		
-		String s1 = s.substring(0,2);
-		System.out.println("S1" + s1);
+		Arrays.sort(arr,(o1,o2) -> Integer.compare(o2,o1));
+		System.out.println(Arrays.toString(arr));
 		
-		String.valueOf(false)
 		
+		int[] arr1 = arr;
 	}
 }

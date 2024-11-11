@@ -69,6 +69,15 @@ class Node4 {
 	SimpleObject2 data; // 데이터
 	Node4 llink; // 좌측포인터(앞쪽 노드에 대한 참조)
 	Node4 rlink; // 우측포인터(뒤쪽 노드에 대한 참조)
+	
+	public Node4() {
+		data = null;
+		llink = rlink = this;
+	}
+	
+	public Node4(SimpleObject2 obj) {
+		data = obj;
+	}
 
 }
 
@@ -78,7 +87,6 @@ class DoubledLinkedList2 {
 	// --- 생성자(constructor) ---//
 	public DoubledLinkedList2() {
 		first = new Node4(); // dummy(first) 노드를 생성
-
 	}
 
 	// --- 리스트가 비어있는가? ---//
@@ -98,7 +106,15 @@ class DoubledLinkedList2 {
 
 	// --- 올림차순으로 정렬이 되도록 insert ---//
 	public void add(SimpleObject2 obj, Comparator<? super SimpleObject2> c) {
-
+		Node4 newNode = new Node4(obj);
+		
+		
+		while(head != null) {
+			if(c.compare(obj, head.data) == 1) {
+				
+			}
+		}
+		
 
 	}
 
